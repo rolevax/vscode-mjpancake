@@ -17,7 +17,8 @@
 		"commands": [
 			{
 				"command": "mjpancake.newGirl",
-				"title": "Pancake Mahjong: New Girl"
+				"title": "New Girl",
+				"category": "Pancake Mahjong"
 			}
 		]
 	},
