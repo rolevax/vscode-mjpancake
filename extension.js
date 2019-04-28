@@ -80,6 +80,10 @@ function openGirlJsonEditor(jsonUri) {
         let obj = JSON.parse(jsonText);
         panel.webview.postMessage(obj);
     });
+
+    panel.webview.onDidReceiveMessage(message => {
+        console.log("get girl json: " + JSON.stringify(message));
+    });
 }
 
 function getGirlJsonEditorHtml() {
@@ -107,13 +111,13 @@ function getGirlJsonEditorHtml() {
         <td><img id="preview"></img></td>
       </tr>
       <tr>
-        <td><input type="submit" value="Save" /></td>
+        <td><button id="buttonSave">Save</button></td>
       </tr>
       <tr>
-        <td><input type="submit" value="3 doge match" /></td>
+        <td><button>3 Doge Match</button></td>
       </tr>
       <tr>
-        <td><input type="submit" value="Export to Pancake" /></td>
+        <td><button>Export to Pancake</button></td>
       </tr>
     </table>
   </form>
@@ -122,6 +126,8 @@ function getGirlJsonEditorHtml() {
     const form = document.getElementById("form");
     const fuck = document.getElementById("fuck");
     const preview = document.getElementById("preview");
+    const buttonSave = document.getElementById("buttonSave");
+    const vscode = acquireVsCodeApi();
 
     window.addEventListener('message', event => {
       const message = event.data; // The JSON data our extension sent
@@ -131,7 +137,6 @@ function getGirlJsonEditorHtml() {
     form.photo.addEventListener('change', event => {
       if (form.photo.files.length > 0) {
         let image = form.photo.files[0];
-        fuck.innerHTML = 'File name: ' + image.name;
         preview.src = window.URL.createObjectURL(image);
       }
     });
@@ -144,8 +149,21 @@ function getGirlJsonEditorHtml() {
       ctx.drawImage(preview, 0, 0, preview.width, preview.height);
       let dataURL = canvas.toDataURL();
       preview.base64 = dataURL.split(",")[1];
-      fuck.innerHTML = preview.base64;
       canvas = null;
+    };
+
+    buttonSave.onclick = () => {
+      let girlJson = {
+        name: form.name.value,
+        photoBase64: preview.base64
+      };
+      if (!girlJson.name) {
+        girlJson.name = "";
+      }
+      if (!girlJson.photoBase64) {
+        girlJson.photoBase64 = "";
+      }
+      vscode.postMessage(girlJson);
     };
   </script>
 </body>
