@@ -103,6 +103,7 @@ function getGirlJsonEditorHtml() {
         <td><input type="file" name="photo" accept="image/png, image/jpeg"></td>
       </tr>
       <tr>
+        <td></td>
         <td><img id="preview"></img></td>
       </tr>
       <tr>
@@ -134,6 +135,18 @@ function getGirlJsonEditorHtml() {
         preview.src = window.URL.createObjectURL(image);
       }
     });
+
+    preview.onload = () => {
+      let canvas = document.createElement("canvas");
+      canvas.width = preview.width;
+      canvas.height = preview.height;
+      let ctx = canvas.getContext("2d");
+      ctx.drawImage(preview, 0, 0, preview.width, preview.height);
+      let dataURL = canvas.toDataURL();
+      preview.base64 = dataURL.split(",")[1];
+      fuck.innerHTML = preview.base64;
+      canvas = null;
+    };
   </script>
 </body>
 </html>`;
