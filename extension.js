@@ -17,7 +17,7 @@ function activate(context) {
 
     // let disposable = vscode.commands.registerCommand('mjpancake.newGirl', openNewGirl);
     let disposable = vscode.commands.registerCommand('mjpancake.newGirl', () => {
-        openGirlJsonEditor(vscode.Uri.file("~/code/lua/first.girl.json"));
+        openGirlJsonEditor(vscode.Uri.file("/tmp/first.girl.json"));
     });
 
     context.subscriptions.push(disposable);
@@ -69,9 +69,17 @@ function openGirlJsonEditor(jsonUri) {
         'mjpancakeGirlJsonEditor',
         path.basename(jsonUri.fsPath),
         vscode.ViewColumn.Active,
-        {}
+        {
+            enableScripts: true
+        }
     );
     panel.webview.html = getGirlJsonEditorHtml();
+
+    vscode.workspace.openTextDocument(jsonUri).then(jsonDoc => {
+        let jsonText = jsonDoc.getText();
+        let obj = JSON.parse(jsonText);
+        panel.webview.postMessage(obj);
+    });
 }
 
 function getGirlJsonEditorHtml() {
@@ -83,17 +91,50 @@ function getGirlJsonEditorHtml() {
   <title></title>
 </head>
 <body>
-  <a></a>
-  <form>
+  <a id="fuck"></a>
+  <form id="form">
     <table>
-      <tr><td>Name</td><td><input type="text" /></td>
-      <tr><td>Photo</td><td><input type="file"></td></tr>
+      <tr>
+        <td>Name</td>
+        <td><input type="text" name="name" /></td>
+      </tr>
+      <tr>
+        <td>Photo</td>
+        <td><input type="file" name="photo" accept="image/png, image/jpeg"></td>
+      </tr>
+      <tr>
+        <td><img id="preview"></img></td>
+      </tr>
+      <tr>
+        <td><input type="submit" value="Save" /></td>
+      </tr>
+      <tr>
+        <td><input type="submit" value="3 doge match" /></td>
+      </tr>
+      <tr>
+        <td><input type="submit" value="Export to Pancake" /></td>
+      </tr>
     </table>
   </form>
-  <button>Save</button>
-  <button>Test with 3 doges</button>
-  <button>Export to Pancake</button>
-  <img src="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAAUAAAAFCAYAAACNbyblAAAAHElEQVQI12P4//8/w38GIAXDIBKE0DHxgljNBAAO9TXL0Y4OHwAAAABJRU5ErkJggg==" alt="Red dot" />
+
+  <script>
+    const form = document.getElementById("form");
+    const fuck = document.getElementById("fuck");
+    const preview = document.getElementById("preview");
+
+    window.addEventListener('message', event => {
+      const message = event.data; // The JSON data our extension sent
+      form.name.value = message.name;
+    });
+
+    form.photo.addEventListener('change', event => {
+      if (form.photo.files.length > 0) {
+        let image = form.photo.files[0];
+        fuck.innerHTML = 'File name: ' + image.name;
+        preview.src = window.URL.createObjectURL(image);
+      }
+    });
+  </script>
 </body>
 </html>`;
 }
