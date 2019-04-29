@@ -15,6 +15,7 @@
 </head>
 <body>
     <center>
+        <a id="fuck"></a>
         <form id="form">
             <table>
                 <tr>
@@ -43,16 +44,43 @@
     </center>
 
     <script>
+        const fuck = document.getElementById("fuck"); // for debug use
         const form = document.getElementById("form");
         const preview = document.getElementById("preview");
         const buttonSave = document.getElementById("buttonSave");
         const vscode = acquireVsCodeApi();
 
+        let girlJson = { name: "", photoBase64: "" };
+        const refreshDisplay = () => {
+            form.name.value = girlJson.name;
+            if (girlJson.photoBase64) {
+                preview.src = "data:image/png;base64," + girlJson.photoBase64;
+            } else {
+                preview.src = undefined;
+            }
+        }
+
+        const savedState = vscode.getState();
+        if (savedState) {
+            girlJson = savedState;
+            refreshDisplay();
+        }
+
         window.addEventListener('message', event => {
-            const message = event.data; // The JSON data our extension sent
-            form.name.value = message.name;
-            preview.base64 = message.photoBase64;
-            preview.src = "data:image/png;base64," + preview.base64;
+            girlJson = event.data;
+            if (!girlJson.name) {
+                girlJson.name = "";
+            }
+            if (!girlJson.photoBase64) {
+                girlJson.photoBase64 = "";
+            }
+            vscode.setState(girlJson);
+            refreshDisplay();
+        });
+
+        form.name.addEventListener('input', event => {
+            girlJson.name = form.name.value;
+            vscode.setState(girlJson);
         });
 
         form.photo.addEventListener('change', event => {
@@ -66,24 +94,12 @@
             let canvas = document.createElement("canvas");
             canvas.width = preview.width;
             canvas.height = preview.height;
-            let ctx = canvas.getContext("2d");
-            ctx.drawImage(preview, 0, 0, preview.width, preview.height);
-            let dataURL = canvas.toDataURL();
-            preview.base64 = dataURL.split(",")[1];
-            canvas = null;
+            canvas.getContext("2d").drawImage(preview, 0, 0, preview.width, preview.height);
+            girlJson.photoBase64 = canvas.toDataURL().split(",")[1];
+            vscode.setState(girlJson);
         };
 
         buttonSave.onclick = () => {
-            let girlJson = {
-                name: form.name.value,
-                photoBase64: preview.base64
-            };
-            if (!girlJson.name) {
-                girlJson.name = "";
-            }
-            if (!girlJson.photoBase64) {
-                girlJson.photoBase64 = "";
-            }
             vscode.postMessage(girlJson);
         };
     </script>
