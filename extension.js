@@ -1,5 +1,6 @@
 const vscode = require('vscode');
 const path = require('path');
+const fs = require('fs');
 
 const sampleLuaCode = `function ondraw()
   if who ~= self or rinshan then
@@ -82,7 +83,14 @@ function openGirlJsonEditor(jsonUri) {
     });
 
     panel.webview.onDidReceiveMessage(message => {
-        console.log("get girl json: " + JSON.stringify(message));
+        fs.writeFile(jsonUri.fsPath, JSON.stringify(message), error => {
+            if (error) {
+                vscode.window.showErrorMessage(error);
+                return;
+            }
+      
+            vscode.window.showInformationMessage("Girl file saved");
+        }); 
     });
 }
 
