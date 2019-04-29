@@ -140,6 +140,8 @@ function getGirlJsonEditorHtml() {
         window.addEventListener('message', event => {
             const message = event.data; // The JSON data our extension sent
             form.name.value = message.name;
+            preview.base64 = message.photoBase64;
+            preview.src = "data:image/png;base64," + preview.base64;
         });
 
         form.photo.addEventListener('change', event => {
