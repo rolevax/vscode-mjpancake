@@ -101,6 +101,14 @@ function getGirlJsonEditorHtml() {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
+    <style>
+        img {
+            min-width: 300px;
+            min-height: 500px;
+            max-width: 300px;
+            max-height: 500px;
+        }
+    </style>
 </head>
 <body>
     <a id="fuck"></a>
