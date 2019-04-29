@@ -36,6 +36,14 @@
             border: var(--vscode-input-border);
             padding: 5px;
         }
+
+        th {
+            text-align: left;
+            font-size: 150%;
+            padding-left: 2px;
+            padding-top: 10;
+            padding-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -44,25 +52,30 @@
         <form id="form">
             <table>
                 <tr>
-                    <td>Name</td>
+                    <th colspan="2">
+                        <a>编辑人物属性</a>
+                    </th>
+                </tr>
+                <tr>
+                    <td>显示名</td>
                     <td><input type="text" name="name" /></td>
                 </tr>
                 <tr>
-                    <td>Photo File</td>
+                    <td>头像文件</td>
                     <td><input type="file" name="photo" accept="image/png, image/jpeg"></td>
                 </tr>
                 <tr>
-                    <td>Photo Preview</td>
+                    <td>头像预览</td>
                     <td><img id="preview"></img></td>
                 </tr>
                 <tr>
-                    <td rowspan=3>Actions</td>
-                    <td><button class="longBar" id="buttonSave">Save</button></td>
+                    <td rowspan=3>操作</td>
+                    <td><button class="longBar" id="buttonSave">保存</button></td>
                 </tr>
-                    <td><button class="longBar">3 Doge Match</button></td>
+                    <td><button class="longBar">测试</button></td>
                 </tr>
                 </tr>
-                    <td><button class="longBar">Export to Pancake</button></td>
+                    <td><button class="longBar">导出至松饼</button></td>
                 </tr>
             </table>
         </form>

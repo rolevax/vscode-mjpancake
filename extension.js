@@ -21,10 +21,7 @@ function activate(context) {
     const filePath = vscode.Uri.file(path.join(context.extensionPath, 'girl-json-editor.html'));
     girlJsonEditorHtml = fs.readFileSync(filePath.fsPath, 'utf8');
 
-    // let disposable = vscode.commands.registerCommand('mjpancake.newGirl', openNewGirl);
-    let disposable = vscode.commands.registerCommand('mjpancake.newGirl', () => {
-        openGirlJsonEditor(vscode.Uri.file("/tmp/first.girl.json"));
-    });
+    let disposable = vscode.commands.registerCommand('mjpancake.newGirl', openNewGirl);
 
     context.subscriptions.push(disposable);
 }
@@ -35,9 +32,9 @@ function deactivate() {}
 function openNewGirl() {
     vscode.window.showSaveDialog({
         defaultUri: vscode.Uri.file("untitled"),
-        saveLabel: "Create Girl",
+        saveLabel: "创建人物",
         filters: {
-            "Pancake Mahjong Girl File": [ "girl.json" ]
+            "松饼人物文件": [ "girl.json" ]
         }
     }).then(openNewGirlFrom);
 }
@@ -94,7 +91,7 @@ function openGirlJsonEditor(jsonUri) {
                 return;
             }
       
-            vscode.window.showInformationMessage("Girl file saved");
+            vscode.window.showInformationMessage("保存成功");
         }); 
     });
 }
