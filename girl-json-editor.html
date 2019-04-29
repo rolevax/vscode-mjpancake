@@ -14,36 +14,36 @@
     </style>
 </head>
 <body>
-    <a id="fuck"></a>
-    <form id="form">
-        <table>
-            <tr>
-                <td>Name</td>
-                <td><input type="text" name="name" /></td>
-            </tr>
-            <tr>
-                <td>Photo</td>
-                <td><input type="file" name="photo" accept="image/png, image/jpeg"></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><img id="preview"></img></td>
-            </tr>
-            <tr>
-                <td><button id="buttonSave">Save</button></td>
-            </tr>
-            <tr>
-                <td><button>3 Doge Match</button></td>
-            </tr>
-            <tr>
-                <td><button>Export to Pancake</button></td>
-            </tr>
-        </table>
-    </form>
+    <center>
+        <form id="form">
+            <table>
+                <tr>
+                    <td>Name</td>
+                    <td><input type="text" name="name" /></td>
+                </tr>
+                <tr>
+                    <td>Photo File</td>
+                    <td><input type="file" name="photo" accept="image/png, image/jpeg"></td>
+                </tr>
+                <tr>
+                    <td>Photo Preview</td>
+                    <td><img id="preview"></img></td>
+                </tr>
+                <tr>
+                    <td rowspan=3>Actions</td>
+                    <td><button id="buttonSave">Save</button></td>
+                </tr>
+                    <td><button>3 Doge Match</button></td>
+                </tr>
+                </tr>
+                    <td><button>Export to Pancake</button></td>
+                </tr>
+            </table>
+        </form>
+    </center>
 
     <script>
         const form = document.getElementById("form");
-        const fuck = document.getElementById("fuck");
         const preview = document.getElementById("preview");
         const buttonSave = document.getElementById("buttonSave");
         const vscode = acquireVsCodeApi();
