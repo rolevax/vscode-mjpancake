@@ -11,6 +11,31 @@
             max-width: 300px;
             max-height: 500px;
         }
+
+        button.longBar {
+            width: 100%;
+            border: none;
+            color: var(--vscode-button-foreground);
+            background-color: var(--vscode-button-background);
+            padding: 5px;
+        }
+
+        button.longBar:hover {
+            background-color: var(--vscode-button-hoverBackground);
+        }
+
+        td {
+            vertical-align: top;
+            padding: 2px;
+        }
+
+        input {
+            width: 290px;
+            background-color: var(--vscode-input-background);
+            color: var(--vscode-input-foreground);
+            border: var(--vscode-input-border);
+            padding: 5px;
+        }
     </style>
 </head>
 <body>
@@ -32,12 +57,12 @@
                 </tr>
                 <tr>
                     <td rowspan=3>Actions</td>
-                    <td><button id="buttonSave">Save</button></td>
+                    <td><button class="longBar" id="buttonSave">Save</button></td>
                 </tr>
-                    <td><button>3 Doge Match</button></td>
+                    <td><button class="longBar">3 Doge Match</button></td>
                 </tr>
                 </tr>
-                    <td><button>Export to Pancake</button></td>
+                    <td><button class="longBar">Export to Pancake</button></td>
                 </tr>
             </table>
         </form>
