@@ -24,6 +24,10 @@
             background-color: var(--vscode-button-hoverBackground);
         }
 
+        button.longBar:disabled {
+            background-color: var(--vscode-widget-shadow);
+        }
+
         td {
             vertical-align: top;
             padding: 2px;
@@ -72,10 +76,10 @@
                     <td rowspan=3>操作</td>
                     <td><button class="longBar" id="buttonSave">保存</button></td>
                 </tr>
-                    <td><button class="longBar">测试</button></td>
+                    <td><button class="longBar" id="buttonTest">测试</button></td>
                 </tr>
                 </tr>
-                    <td><button class="longBar">导出至松饼</button></td>
+                    <td><button class="longBar" id="buttonExport">导出至松饼</button></td>
                 </tr>
             </table>
         </form>
@@ -86,6 +90,8 @@
         const form = document.getElementById("form");
         const preview = document.getElementById("preview");
         const buttonSave = document.getElementById("buttonSave");
+        const buttonTest = document.getElementById("buttonTest");
+        const buttonExport = document.getElementById("buttonExport");
         const vscode = acquireVsCodeApi();
 
         let pageState = {
@@ -101,24 +107,38 @@
                 preview.src = undefined;
             }
         };
-        const setDocumentDirtyAndSaveState = (v) => {
-            pageState.documentDirty = v;
+        const setDocumentDirtyAndSaveState = (dirty) => {
+            pageState.documentDirty = dirty;
             vscode.setState(pageState);
+
+            buttonSave.innerHTML = dirty ? "保存修改" : "已保存所有修改";
+            buttonSave.disabled = !dirty;
+            let needSave = dirty ? "（需先保存）" : "";
+            buttonTest.innerHTML = "测试" + needSave;
+            buttonTest.disabled = dirty;
+            buttonExport.innerHTML = "导出到松饼" + needSave;
+            buttonExport.disabled = dirty;
         };
 
         window.addEventListener('message', event => {
-            pageState.girlJson = event.data;
-            if (!pageState.girlJson) {
-                pageState.girlJson = {};
+            if (event.data.saveSuccess) {
+                setDocumentDirtyAndSaveState(false);
             }
-            if (!pageState.girlJson.name) {
-                pageState.girlJson.name = "";
+
+            if (event.data.girlJson) {
+                pageState.girlJson = event.data.girlJson;
+                if (!pageState.girlJson) {
+                    pageState.girlJson = {};
+                }
+                if (!pageState.girlJson.name) {
+                    pageState.girlJson.name = "";
+                }
+                if (!pageState.girlJson.photoBase64) {
+                    pageState.girlJson.photoBase64 = "";
+                }
+                setDocumentDirtyAndSaveState(false);
+                refreshDisplay();
             }
-            if (!pageState.girlJson.photoBase64) {
-                pageState.girlJson.photoBase64 = "";
-            }
-            setDocumentDirtyAndSaveState(false);
-            refreshDisplay();
         });
 
         form.name.addEventListener('input', event => {

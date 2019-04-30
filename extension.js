@@ -82,8 +82,8 @@ function openGirlJsonEditor(jsonUri) {
         if (message.fetch) {
             vscode.workspace.openTextDocument(jsonUri).then(jsonDoc => {
                 let jsonText = jsonDoc.getText();
-                let obj = JSON.parse(jsonText);
-                panel.webview.postMessage(obj);
+                let girl = JSON.parse(jsonText);
+                panel.webview.postMessage({ girlJson: girl });
             });
         }
 
@@ -94,7 +94,7 @@ function openGirlJsonEditor(jsonUri) {
                     return;
                 }
         
-                vscode.window.showInformationMessage("保存成功");
+                panel.webview.postMessage({ saveSuccess: true });
             }); 
         }
     });
