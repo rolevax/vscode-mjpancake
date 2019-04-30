@@ -78,21 +78,25 @@ function openGirlJsonEditor(jsonUri) {
     );
     panel.webview.html = girlJsonEditorHtml;
 
-    vscode.workspace.openTextDocument(jsonUri).then(jsonDoc => {
-        let jsonText = jsonDoc.getText();
-        let obj = JSON.parse(jsonText);
-        panel.webview.postMessage(obj);
-    });
-
     panel.webview.onDidReceiveMessage(message => {
-        fs.writeFile(jsonUri.fsPath, JSON.stringify(message), error => {
-            if (error) {
-                vscode.window.showErrorMessage(error);
-                return;
-            }
-      
-            vscode.window.showInformationMessage("保存成功");
-        }); 
+        if (message.fetch) {
+            vscode.workspace.openTextDocument(jsonUri).then(jsonDoc => {
+                let jsonText = jsonDoc.getText();
+                let obj = JSON.parse(jsonText);
+                panel.webview.postMessage(obj);
+            });
+        }
+
+        if (message.save) {
+            fs.writeFile(jsonUri.fsPath, JSON.stringify(message.save), error => {
+                if (error) {
+                    vscode.window.showErrorMessage(error);
+                    return;
+                }
+        
+                vscode.window.showInformationMessage("保存成功");
+            }); 
+        }
     });
 }
 

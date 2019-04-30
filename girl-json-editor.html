@@ -88,37 +88,42 @@
         const buttonSave = document.getElementById("buttonSave");
         const vscode = acquireVsCodeApi();
 
-        let girlJson = { name: "", photoBase64: "" };
+        let pageState = {
+            girlJson: { name: "", photoBase64: "" },
+            documentDirty: true
+        };
         const refreshDisplay = () => {
+            const girlJson = pageState.girlJson;
             form.name.value = girlJson.name;
             if (girlJson.photoBase64) {
                 preview.src = "data:image/png;base64," + girlJson.photoBase64;
             } else {
                 preview.src = undefined;
             }
-        }
-
-        const savedState = vscode.getState();
-        if (savedState) {
-            girlJson = savedState;
-            refreshDisplay();
-        }
+        };
+        const setDocumentDirtyAndSaveState = (v) => {
+            pageState.documentDirty = v;
+            vscode.setState(pageState);
+        };
 
         window.addEventListener('message', event => {
-            girlJson = event.data;
-            if (!girlJson.name) {
-                girlJson.name = "";
+            pageState.girlJson = event.data;
+            if (!pageState.girlJson) {
+                pageState.girlJson = {};
             }
-            if (!girlJson.photoBase64) {
-                girlJson.photoBase64 = "";
+            if (!pageState.girlJson.name) {
+                pageState.girlJson.name = "";
             }
-            vscode.setState(girlJson);
+            if (!pageState.girlJson.photoBase64) {
+                pageState.girlJson.photoBase64 = "";
+            }
+            setDocumentDirtyAndSaveState(false);
             refreshDisplay();
         });
 
         form.name.addEventListener('input', event => {
-            girlJson.name = form.name.value;
-            vscode.setState(girlJson);
+            pageState.girlJson.name = form.name.value;
+            setDocumentDirtyAndSaveState(true);
         });
 
         form.photo.addEventListener('change', event => {
@@ -133,13 +138,21 @@
             canvas.width = preview.width;
             canvas.height = preview.height;
             canvas.getContext("2d").drawImage(preview, 0, 0, preview.width, preview.height);
-            girlJson.photoBase64 = canvas.toDataURL().split(",")[1];
-            vscode.setState(girlJson);
+            pageState.girlJson.photoBase64 = canvas.toDataURL().split(",")[1];
+            setDocumentDirtyAndSaveState(true);
         };
 
         buttonSave.onclick = () => {
-            vscode.postMessage(girlJson);
+            vscode.postMessage({ save: pageState.girlJson });
         };
+
+        const savedState = vscode.getState();
+        if (savedState) {
+            pageState = savedState;
+            refreshDisplay();
+        } else {
+            vscode.postMessage({ fetch: true });
+        }
     </script>
 </body>
 </html>
