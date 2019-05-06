@@ -166,6 +166,10 @@
             vscode.postMessage({ save: pageState.girlJson });
         };
 
+        buttonTest.onclick = () => {
+            vscode.postMessage({ test: true });
+        };
+
         const savedState = vscode.getState();
         if (savedState) {
             pageState = savedState;

@@ -1,6 +1,7 @@
 const vscode = require('vscode');
 const path = require('path');
 const fs = require('fs');
+const child_process = require('child_process');
 
 const sampleLuaCode = `function ondraw()
   if who ~= self or rinshan then
@@ -96,6 +97,20 @@ function openGirlJsonEditor(jsonUri) {
         
                 panel.webview.postMessage({ saveSuccess: true });
             }); 
+        }
+
+        if (message.test) {
+            let app = vscode.workspace.getConfiguration("mjpancake").get("appPath");
+            if (!app) {
+                vscode.window.showErrorMessage("未配置松饼主程序路径");
+                return;
+            }
+
+            child_process.exec(app + ' ' + jsonUri.fsPath, (err) => {
+                if (err) {
+                    vscode.window.showErrorMessage(err);
+                }
+            });
         }
     });
 }

@@ -20,7 +20,18 @@
 				"title": "New Girl",
 				"category": "Pancake Mahjong"
 			}
-		]
+		],
+		"configuration": {
+			"type": "object",
+			"title": "Pancake Mahjong",
+			"properties": {
+				"mjpancake.appPath": {
+					"type": "string",
+					"default": "",
+					"markdownDescription": "Absolute path to `mjpancake.exe` (or `mjpancake` on a Unix-like)"
+				}
+			}
+		}
 	},
 	"scripts": {
 		"postinstall": "node ./node_modules/vscode/bin/install",
