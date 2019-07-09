@@ -2,7 +2,7 @@
 	"name": "mjpancake",
 	"displayName": "Pancake Mahjong",
 	"description": "Pancake Mahjong support for VS Code",
-	"version": "0.1.1",
+	"version": "0.2.0",
 	"publisher": "rolevax",
 	"icon": "images/icon.png",
 	"repository": {
