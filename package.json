@@ -10,7 +10,9 @@
 		"Other"
 	],
 	"activationEvents": [
-		"onCommand:mjpancake.newGirl"
+		"onCommand:mjpancake.newGirl",
+		"onLanguage:json",
+		"workspaceContains:*.girl.json"
 	],
 	"main": "./extension.js",
 	"contributes": {

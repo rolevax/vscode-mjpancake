@@ -22,9 +22,11 @@ function activate(context) {
     const filePath = vscode.Uri.file(path.join(context.extensionPath, 'girl-json-editor.html'));
     girlJsonEditorHtml = fs.readFileSync(filePath.fsPath, 'utf8');
 
-    let disposable = vscode.commands.registerCommand('mjpancake.newGirl', openNewGirl);
+    let subNewGirlCommand = vscode.commands.registerCommand('mjpancake.newGirl', openNewGirl);
+    let subGirlDocOpen = vscode.window.onDidChangeActiveTextEditor(handleActiveEditorChange);
 
-    context.subscriptions.push(disposable);
+    context.subscriptions.push(subNewGirlCommand);
+    context.subscriptions.push(subGirlDocOpen);
 }
 exports.activate = activate;
 
@@ -38,6 +40,19 @@ function openNewGirl() {
             "松饼人物文件": [ "girl.json" ]
         }
     }).then(openNewGirlFrom);
+}
+
+function handleActiveEditorChange(editor) {
+    if (!editor) {
+        return;
+    }
+
+    let filename = editor.document.fileName;
+    if (filename.endsWith(".girl.json")) {
+        vscode.commands.executeCommand("workbench.action.closeActiveEditor").then(() => {
+            openGirlJsonEditor(vscode.Uri.file(filename));
+        });
+    }
 }
 
 function openNewGirlFrom(jsonUri) {
