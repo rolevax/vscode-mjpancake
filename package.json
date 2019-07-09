@@ -2,14 +2,17 @@
 	"name": "mjpancake",
 	"displayName": "Pancake Mahjong",
 	"description": "Pancake Mahjong support for VS Code",
-	"version": "0.2.0",
+	"version": "0.2.1",
 	"publisher": "rolevax",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/rolevax/vscode-mjpancake.git"
 	},
 	"icon": "images/icon.png",
-	"keywords": [ "mjpancake", "libsaki" ],
+	"keywords": [
+		"mjpancake",
+		"libsaki"
+	],
 	"engines": {
 		"vscode": "^1.33.0"
 	},
