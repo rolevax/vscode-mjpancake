@@ -34,7 +34,7 @@ function deactivate() {}
 
 function openNewGirl() {
     vscode.window.showSaveDialog({
-        defaultUri: vscode.Uri.file("untitled"),
+        defaultUri: vscode.Uri.file(vscode.workspace.rootPath ? vscode.workspace.rootPath : "untitled"),
         saveLabel: "创建人物",
         filters: {
             "松饼人物文件": [ "girl.json" ]
