@@ -132,6 +132,10 @@ function openGirlJsonEditor(jsonUri) {
                 }
             });
         }
+
+        if (message.export) {
+            vscode.window.showErrorMessage("暂无此功能");
+        }
     });
 
     panel.webview.html = girlJsonEditorHtml;

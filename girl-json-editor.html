@@ -73,12 +73,13 @@
                     <td><img id="preview"></img></td>
                 </tr>
                 <tr>
-                    <td rowspan=3>操作</td>
+                    <td rowspan=2>操作</td>
                     <td><button class="longBar" id="buttonSave">保存</button></td>
                 </tr>
                     <td><button class="longBar" id="buttonTest">测试</button></td>
                 </tr>
                 </tr>
+                    <td rowspan=1>高级操作</td>
                     <td><button class="longBar" id="buttonExport">导出至松饼</button></td>
                 </tr>
             </table>
@@ -168,6 +169,10 @@
 
         buttonTest.onclick = () => {
             vscode.postMessage({ test: true });
+        };
+
+        buttonExport.onclick = () => {
+            vscode.postMessage({ export: true });
         };
 
         const savedState = vscode.getState();
