@@ -61,9 +61,12 @@ function openNewGirlFiles(jsonUri, luaUri) {
     vscode.workspace.openTextDocument(luaUri).then(luaDoc => {
         vscode.window.showTextDocument(luaDoc, vscode.ViewColumn.Active, true).then(luaEditor => {
             vscode.commands.executeCommand("workbench.action.previousEditorInGroup"); // back to json tab
-            luaEditor.edit(editBuilder => {
-                editBuilder.insert(new vscode.Position(0, 0), sampleLuaCode);
-            })
+            if (!luaDoc.getText())
+            {
+                luaEditor.edit(editBuilder => {
+                    editBuilder.insert(new vscode.Position(0, 0), sampleLuaCode);
+                })
+            }
         })
     });
 }
@@ -77,14 +80,16 @@ function openGirlJsonEditor(jsonUri) {
             enableScripts: true
         }
     );
-    panel.webview.html = girlJsonEditorHtml;
 
     panel.webview.onDidReceiveMessage(message => {
         if (message.fetch) {
             vscode.workspace.openTextDocument(jsonUri).then(jsonDoc => {
                 let jsonText = jsonDoc.getText();
-                let girl = JSON.parse(jsonText);
-                panel.webview.postMessage({ girlJson: girl });
+                if (jsonText)
+                {
+                    let girl = JSON.parse(jsonText);
+                    panel.webview.postMessage({ girlJson: girl });
+                }
             });
         }
 
@@ -113,6 +118,8 @@ function openGirlJsonEditor(jsonUri) {
             });
         }
     });
+
+    panel.webview.html = girlJsonEditorHtml;
 }
 
 module.exports = {
