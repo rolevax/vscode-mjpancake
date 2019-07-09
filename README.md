@@ -15,11 +15,6 @@ This extension facilitates creating, editing, and testing Pancake Mahjong user-m
 
 ## Extension Settings
 
-Include if your extension adds any VS Code settings through the `contributes.configuration` extension point.
-
-For example:
-
 This extension contributes the following settings:
 
-* `mjpancake.enable`: enable/disable this extension
 * `mjpancake.appPath`: the path to the `mjpancake` (or `mjpancake.exe` in Windows) executable file
