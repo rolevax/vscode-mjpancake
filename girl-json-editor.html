@@ -107,11 +107,8 @@
             } else {
                 preview.src = undefined;
             }
-        };
-        const setDocumentDirtyAndSaveState = (dirty) => {
-            pageState.documentDirty = dirty;
-            vscode.setState(pageState);
 
+            let dirty = pageState.documentDirty;
             buttonSave.innerHTML = dirty ? "保存修改" : "已保存所有修改";
             buttonSave.disabled = !dirty;
             let needSave = dirty ? "（需先保存）" : "";
@@ -119,6 +116,11 @@
             buttonTest.disabled = dirty;
             buttonExport.innerHTML = "导出到松饼" + needSave;
             buttonExport.disabled = dirty;
+        };
+        const setDocumentDirtyAndSaveState = (dirty) => {
+            pageState.documentDirty = dirty;
+            vscode.setState(pageState);
+            refreshDisplay();
         };
 
         window.addEventListener('message', event => {
