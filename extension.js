@@ -8,7 +8,7 @@ const sampleLuaCode = `function ondraw()
     return
   end
 
-  print("好像能用了，耶！")
+  print("我想裱你妹，还想裱鸭子，还想裱意大利人")
 end`;
 
 let girlJsonEditorHtml = "";
