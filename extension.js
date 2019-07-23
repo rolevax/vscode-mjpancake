@@ -3,13 +3,8 @@ const path = require('path');
 const fs = require('fs');
 const child_process = require('child_process');
 
-const sampleLuaCode = `function ondraw()
-  if who ~= self or rinshan then
-    return
-  end
-
-  print("我想裱你妹，还想裱鸭子，还想裱意大利人")
-end`;
+const sampleLuaCode = `print("我想裱你妹，还想裱鸭子，还想裱意大利人")
+`;
 
 let girlJsonEditorHtml = "";
 
